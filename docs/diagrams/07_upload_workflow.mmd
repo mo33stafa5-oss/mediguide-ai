@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor U as Patient
+  participant FE as Documents page
+  participant API as FastAPI /api/documents
+  participant V as ocr.validate
+  participant ST as Supabase Storage (private bucket)
+  participant DB as Postgres (RLS)
+  U->>FE: choose file + document type
+  FE->>API: POST /upload multipart (XHR with progress)
+  API->>V: magic bytes, extension match, size <= 20MB, Pillow verify, pixel limit, PDF pages
+  alt invalid
+    API-->>FE: 422 invalid_file
+  end
+  API->>ST: upload user_id/doc_id/safe_name (user JWT -> storage RLS)
+  API->>DB: insert medical_documents (user JWT -> RLS)
+  Note over API,ST: if DB insert fails the stored file is removed
+  API->>DB: audit_logs (service role)
+  API-->>FE: 201 document
+  U->>FE: Analyze
+  FE->>API: POST /analyze {document_id}
+  API->>DB: select document (RLS: 404 if not yours)
+  API->>ST: download
+  API->>API: type-specific workflow (see OCR/ECG/X-ray diagrams)
+  API->>DB: insert medical_analysis_reports, status needs_review/analyzed
+  U->>FE: View
+  FE->>API: GET /{id}/url
+  API->>ST: create_signed_url(120 s)

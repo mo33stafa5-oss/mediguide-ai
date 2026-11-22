@@ -1,0 +1,25 @@
+flowchart TB
+  P["Patient"]
+  P1(("1. Authenticate"))
+  P2(("2. Chat + RAG"))
+  P3(("3. Risk prediction"))
+  P4(("4. Document upload + OCR"))
+  P5(("5. Medication safety"))
+  P6(("6. Admin / knowledge"))
+  D1[("D1 profiles, auth.users")]
+  D2[("D2 conversations, messages")]
+  D3[("D3 medical_knowledge (pgvector)")]
+  D4[("D4 heart_risk_assessments")]
+  D5[("D5 medical_documents + Storage + reports")]
+  D6[("D6 prescriptions, medication_records")]
+  D7[("D7 audit_logs")]
+  P -- credentials --> P1 <--> D1
+  P -- question --> P2 <--> D2
+  D3 -- approved chunks --> P2
+  P -- inputs --> P3 --> D4
+  P -- file --> P4 <--> D5
+  D5 -- OCR medications --> P5
+  P -- confirmed medications --> P5 --> D6
+  P6 --> D3
+  P6 --> D1
+  P2 & P4 & P5 & P6 --> D7

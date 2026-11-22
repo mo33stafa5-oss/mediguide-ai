@@ -1,0 +1,5 @@
+# Extra dependencies for the OCR worker (needs the Tesseract binary; see Dockerfile.ocr)
+-r requirements.txt
+opencv-python-headless==5.1.0.95
+pytesseract==0.3.13
+uvicorn==0.54.0

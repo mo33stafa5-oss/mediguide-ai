@@ -1,0 +1,17 @@
+flowchart LR
+  DEV["Developer"] -- "git push" --> GH["GitHub repository<br/>(target repo not yet chosen)"]
+  GH -- "import / auto-deploy" --> V["Vercel project (not created)"]
+  subgraph V2["Vercel build"]
+    N["next build -> Next.js app"]
+    P["api/index.py + requirements.txt<br/>Python 3.12 (.python-version)<br/>ml/artifacts bundled via includeFiles"]
+  end
+  V --> V2
+  V2 -- "HTTPS /api/*" --> BR["Browser"]
+  BR --> SB["Supabase managed project<br/>supabase db push (migrations)"]
+  P --> SB
+  P --> GM["Gemini API"]
+  P -- "OCR_WORKER_URL + token" --> OW["OCR worker container<br/>Dockerfile.ocr (any container host)"]
+  ENV["Vercel env vars:<br/>SUPABASE_*, GEMINI_API_KEY, OCR_WORKER_*"] --> V2
+  style GH fill:#fff3cd,stroke:#c77700
+  style V fill:#fff3cd,stroke:#c77700
+  style OW fill:#fff3cd,stroke:#c77700

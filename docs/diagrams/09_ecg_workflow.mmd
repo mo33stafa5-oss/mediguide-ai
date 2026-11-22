@@ -1,0 +1,13 @@
+flowchart LR
+  A["ECG image or PDF upload<br/>bucket ecg-reports"] --> B["validate + store"]
+  B --> C["OCR (Tesseract or PDF text layer)"]
+  C --> D["regex: HR, PR, QRS, QT, QTc"]
+  D --> E{"within plausible range?"}
+  E -- yes --> F["value + plain-language meaning"]
+  E -- no --> G["ignored + warning"]
+  F --> H["Report: printed numbers only"]
+  G --> H
+  H --> I["Disclaimer: no waveform analysis, no diagnosis"]
+  J["Waveform classifier on public ECG datasets"] -.-> K["PLANNED / FUTURE WORK - not implemented"]
+  style J fill:#fff3cd,stroke:#c77700,stroke-dasharray: 5 5
+  style K fill:#fff3cd,stroke:#c77700,stroke-dasharray: 5 5

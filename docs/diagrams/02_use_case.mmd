@@ -1,0 +1,25 @@
+flowchart LR
+  P(["Patient"]):::actor
+  R(["Medical Reviewer"]):::actor
+  A(["Administrator"]):::actor
+  subgraph MediGuide["MediGuide AI"]
+    UC1(["Register / verify email / login"])
+    UC2(["Manage profile & consent"])
+    UC3(["Chat with AI assistant"])
+    UC4(["Run heart risk assessment"])
+    UC5(["Upload medical document"])
+    UC6(["Analyze document (OCR)"])
+    UC7(["Review prescription safety"])
+    UC8(["View timeline / history"])
+    UC9(["Export or delete my data"])
+    UC10(["Ingest knowledge source"])
+    UC11(["Approve / reject knowledge"])
+    UC12(["Manage users & roles"])
+    UC13(["View system health, ML evaluation, audit log"])
+  end
+  P --> UC1 & UC2 & UC3 & UC4 & UC5 & UC7 & UC8 & UC9
+  UC5 -. "include" .-> UC6
+  UC7 -. "extend (from prescription OCR)" .-> UC6
+  R --> UC10 & UC11
+  A --> UC10 & UC11 & UC12 & UC13
+  classDef actor fill:#eaf3ff,stroke:#1677e8,color:#102a56

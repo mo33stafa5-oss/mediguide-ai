@@ -1,0 +1,15 @@
+flowchart TB
+  A["Stored file bytes"] --> B{"MIME"}
+  B -- "PDF" --> C["pypdf text layer"]
+  C -- "text > 30 chars" --> T["OcrResult(text, conf=None)"]
+  C -- "scanned" --> D["pdftoppm 200 dpi, max 5 pages"] --> E
+  B -- "JPG/PNG" --> E["OpenCV: grayscale, upscale to 1600px,<br/>fastNlMeansDenoising, adaptive threshold"]
+  E --> F["pytesseract image_to_data<br/>eng+ara, psm 6"]
+  F --> G["per-word confidence;<br/>words < 60 listed; mean < 60 -> warning"]
+  G --> T
+  T --> H{"Tesseract in this runtime?"}
+  H -- "no and worker configured" --> W["POST OCR worker /internal/ocr"]
+  H -- "no and no worker" --> X["503 ocr_unavailable (clear message)"]
+  T --> P["detect_document_type keyword scores;<br/>warn if different from chosen type"]
+  P --> Q["parse_lab / parse_ecg / parse_prescription"]
+  Q --> R["extracted JSON + warnings (never invented values)"]

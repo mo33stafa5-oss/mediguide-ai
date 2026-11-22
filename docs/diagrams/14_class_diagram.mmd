@@ -1,0 +1,30 @@
+classDiagram
+  class CurrentUser { +str id +str email +str token +str role +str locale +bool consent_ai }
+  class Settings { +supabase_url +gemini_api_key +gemini_model +ocr_worker_url +max_upload_bytes }
+  class OcrResult { +str text +float mean_confidence +str engine +list warnings +list low_conf_words }
+  class HeartInput { +int age +int sex +int cp +int trestbps +int chol +int fbs +int restecg +int thalach +int exang +float oldpeak +int slope +int ca +int thal }
+  class ChatRequest { +str message +UUID conversation_id +str locale }
+  class PrescriptionReviewRequest { +list medications +bool user_confirmed +bool save }
+  class safety { +is_emergency(text) +EMERGENCY_NOTICE +SYSTEM_PROMPT }
+  class gemini { +embed(texts, task) +stream_chat(...) }
+  class rag { +clean_text() +chunk_text() +ingest() +retrieve() +to_sources() }
+  class ml_service { +load_model() +model_meta() +predict(features) }
+  class drugs { +review(meds, allergies) +dailymed_lookup(name) }
+  class engine { +ocr_available() +preprocess() +ocr_image() +ocr_pdf() +extract_text() }
+  class parsers { +detect_document_type() +parse_lab() +parse_ecg() +parse_prescription() }
+  class validate { +sniff_mime() +validate_upload() +safe_filename() }
+  CurrentUser <.. chat_router : Depends(get_current_user)
+  Settings <.. gemini
+  chat_router ..> safety
+  chat_router ..> rag
+  chat_router ..> gemini
+  rag ..> gemini
+  predict_router ..> ml_service
+  predict_router ..> HeartInput
+  documents_router ..> validate
+  documents_router ..> engine
+  documents_router ..> parsers
+  engine --> OcrResult
+  prescriptions_router ..> drugs
+  prescriptions_router ..> PrescriptionReviewRequest
+  chat_router ..> ChatRequest

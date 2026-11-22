@@ -1,0 +1,22 @@
+{
+ "prediction": 0,
+ "score": 0.1773,
+ "model_version": "mediguide-heart-1.0.0",
+ "model_name": "Logistic Regression",
+ "assessment_id": "ff8d36a5-b83e-4190-8758-59efcadf3c9a",
+ "label": "lower_risk_pattern",
+ "explanation": {
+  "en": "…"
+ },
+ "test_metrics_of_selected_model": {
+  "accuracy": 0.8689,
+  "precision": 0.8125,
+  "recall": 0.9286,
+  "f1": 0.8667,
+  "roc_auc": 0.9578
+ },
+ "disclaimer": {
+  "en": "Educational/research tool. Not a diagnosis. Consult a qualified doctor.",
+  "ar": "أداة تعليمية/بحثية وليست تشخيصًا. استشر طبيبًا مختصًا."
+ }
+}

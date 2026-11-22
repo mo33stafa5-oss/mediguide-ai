@@ -1,0 +1,23 @@
+sequenceDiagram
+  autonumber
+  actor U as Patient
+  participant FE as Medications page
+  participant API as FastAPI
+  participant DB as Postgres (RLS)
+  participant DM as DailyMed
+  U->>FE: upload prescription image (Documents)
+  FE->>API: /documents/analyze -> parse_prescription (lexicon + difflib 0.78 cutoff, dose/frequency/duration regex)
+  API-->>FE: medications[] with warnings (approximate name, missing dose, low OCR)
+  U->>FE: edit/confirm each field (human in the loop)
+  FE->>API: POST /prescriptions/review {medications, user_confirmed:false}
+  API->>DB: read recorded allergies
+  API->>API: drugs.review: duplicates, missing dose/frequency, allergy match, curated interaction rules
+  API->>DM: GET spls.json?drug_name=...
+  alt DailyMed unreachable
+    DM--xAPI: error
+    API-->>FE: drug_information.status = unavailable
+  end
+  API-->>FE: warnings, interactions (+source), coverage note, pharmacist notice
+  U->>FE: tick "I checked against the original", Save
+  FE->>API: POST review {save:true,user_confirmed:true}
+  API->>DB: insert prescriptions + medication_records (verified=false)

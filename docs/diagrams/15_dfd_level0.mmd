@@ -1,0 +1,8 @@
+flowchart LR
+  P["Patient"] -- "credentials, questions, risk inputs, files, medications" --> S(("MediGuide AI<br/>System"))
+  S -- "answers + sources, risk result, extracted values, safety warnings" --> P
+  R["Reviewer / Admin"] -- "knowledge text, approvals, role changes" --> S
+  S -- "health, evaluation, audit log, counts" --> R
+  S <-- "auth, rows, files" --> SB["Supabase"]
+  S <-- "prompts + approved excerpts / embeddings" --> G["Gemini"]
+  S <-- "drug label lookup" --> D["DailyMed"]

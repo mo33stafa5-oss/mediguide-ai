@@ -1,0 +1,13 @@
+flowchart LR
+  A["processed.cleveland.data<br/>303 rows, SHA-256 recorded"] --> B["read_csv, '?' -> NaN<br/>target = num > 0"]
+  B --> C["Stratified 80/20 split<br/>242 train / 61 test, seed 42"]
+  C --> D["Per model Pipeline:<br/>impute+scale numeric<br/>impute+one-hot categorical<br/>passthrough binary"]
+  D --> E["GridSearchCV 5-fold on TRAIN only<br/>scoring = ROC-AUC"]
+  E --> F["Evaluate best estimator on TEST once"]
+  E --> G["Select model by CV score<br/>(not by test score)"]
+  F --> H["evaluation.json / .md<br/>ROC, confusion, comparison PNGs"]
+  G --> I["heart_model.joblib + model_meta.json"]
+  I --> J["ml_service loads once per process"]
+  J --> K["POST /api/predict -> saved in heart_risk_assessments"]
+  classDef off fill:#eaf3ff,stroke:#1677e8
+  class A,B,C,D,E,F,G,H,I off

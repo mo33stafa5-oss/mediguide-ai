@@ -1,0 +1,366 @@
+{
+ "python": {
+  "fastapi": {
+   "version": "0.165.0",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "fastapi",
+   "used_in": [
+    "backend/app/auth.py",
+    "backend/app/errors.py",
+    "backend/app/main.py",
+    "backend/app/ratelimit.py",
+    "backend/app/routers/admin.py",
+    "backend/app/routers/chat.py",
+    "backend/app/routers/documents.py",
+    "backend/app/routers/health.py",
+    "backend/app/routers/ocr_worker.py",
+    "backend/app/routers/predict.py",
+    "backend/app/routers/prescriptions.py"
+   ]
+  },
+  "google-genai": {
+   "version": "3.6.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "google",
+   "used_in": [
+    "backend/app/services/gemini.py"
+   ]
+  },
+  "httpx": {
+   "version": "0.28.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "httpx",
+   "used_in": [
+    "backend/app/ocr/engine.py",
+    "backend/app/services/drugs.py"
+   ]
+  },
+  "joblib": {
+   "version": "1.6.0",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "joblib",
+   "used_in": [
+    "backend/app/services/ml_service.py",
+    "ml/train.py"
+   ]
+  },
+  "matplotlib": {
+   "version": "3.11.2",
+   "declared_in": "requirements-dev.txt",
+   "import_name": "matplotlib",
+   "used_in": [
+    "ml/train.py"
+   ]
+  },
+  "numpy": {
+   "version": "2.5.5",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "numpy",
+   "used_in": [
+    "backend/app/ocr/engine.py",
+    "ml/train.py"
+   ]
+  },
+  "opencv-python-headless": {
+   "version": "5.1.0.95",
+   "declared_in": "backend/requirements-ocr.txt",
+   "import_name": "cv2",
+   "used_in": [
+    "backend/app/ocr/engine.py"
+   ]
+  },
+  "pandas": {
+   "version": "3.1.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "pandas",
+   "used_in": [
+    "backend/app/services/ml_service.py",
+    "ml/train.py"
+   ]
+  },
+  "pillow": {
+   "version": "13.0.0",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "PIL",
+   "used_in": [
+    "backend/app/ocr/validate.py",
+    "backend/app/routers/documents.py"
+   ]
+  },
+  "pydantic": {
+   "version": "2.14.4",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "pydantic",
+   "used_in": [
+    "backend/app/schemas.py"
+   ]
+  },
+  "pydantic-settings": {
+   "version": "2.16.3",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "pydantic_settings",
+   "used_in": [
+    "backend/app/config.py"
+   ]
+  },
+  "pypdf": {
+   "version": "7.1.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "pypdf",
+   "used_in": [
+    "backend/app/ocr/engine.py",
+    "backend/app/ocr/validate.py"
+   ]
+  },
+  "pytesseract": {
+   "version": "0.3.13",
+   "declared_in": "backend/requirements-ocr.txt",
+   "import_name": "pytesseract",
+   "used_in": [
+    "backend/app/ocr/engine.py"
+   ]
+  },
+  "pytest": {
+   "version": "9.2.0",
+   "declared_in": "requirements-dev.txt",
+   "import_name": "pytest",
+   "used_in": []
+  },
+  "python-multipart": {
+   "version": "0.0.34",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "multipart",
+   "used_in": []
+  },
+  "scikit-learn": {
+   "version": "1.9.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "sklearn",
+   "used_in": [
+    "ml/train.py"
+   ]
+  },
+  "supabase": {
+   "version": "2.34.1",
+   "declared_in": "backend/requirements.txt",
+   "import_name": "supabase",
+   "used_in": [
+    "backend/app/db.py"
+   ]
+  },
+  "uvicorn": {
+   "version": "0.54.0",
+   "declared_in": "backend/requirements-ocr.txt",
+   "import_name": "uvicorn",
+   "used_in": []
+  }
+ },
+ "npm": {
+  "@hookform/resolvers": {
+   "section": "dependencies",
+   "version": "7.0.8",
+   "used_in": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/app/risk/page.tsx"
+   ]
+  },
+  "@supabase/ssr": {
+   "section": "dependencies",
+   "version": "0.12.7",
+   "used_in": [
+    "lib/supabase/client.ts",
+    "lib/supabase/server.ts",
+    "proxy.ts"
+   ]
+  },
+  "@supabase/supabase-js": {
+   "section": "dependencies",
+   "version": "2.119.2",
+   "used_in": []
+  },
+  "class-variance-authority": {
+   "section": "dependencies",
+   "version": "0.7.1",
+   "used_in": [
+    "components/ui/index.tsx"
+   ]
+  },
+  "clsx": {
+   "section": "dependencies",
+   "version": "2.1.1",
+   "used_in": [
+    "lib/utils.ts"
+   ]
+  },
+  "lucide-react": {
+   "section": "dependencies",
+   "version": "1.77.0",
+   "used_in": [
+    "app/app/chat/page.tsx",
+    "app/app/documents/page.tsx",
+    "app/app/medications/page.tsx",
+    "app/app/page.tsx",
+    "app/page.tsx",
+    "components/app-shell.tsx",
+    "components/toggles.tsx"
+   ]
+  },
+  "next": {
+   "section": "dependencies",
+   "version": "16.4.6",
+   "used_in": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/(auth)/reset-password/page.tsx",
+    "app/app/layout.tsx",
+    "app/app/page.tsx",
+    "app/app/profile/page.tsx",
+    "app/auth/callback/route.ts",
+    "app/layout.tsx",
+    "app/page.tsx",
+    "components/app-shell.tsx",
+    "components/auth-shell.tsx",
+    "lib/supabase/server.ts",
+    "next.config.ts",
+    "proxy.ts"
+   ]
+  },
+  "radix-ui": {
+   "section": "dependencies",
+   "version": "1.8.1",
+   "used_in": [
+    "components/ui/index.tsx"
+   ]
+  },
+  "react": {
+   "section": "dependencies",
+   "version": "19.3.0",
+   "used_in": [
+    "app/(auth)/forgot-password/page.tsx",
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/(auth)/reset-password/page.tsx",
+    "app/app/admin/page.tsx",
+    "app/app/chat/page.tsx",
+    "app/app/documents/page.tsx",
+    "app/app/medications/page.tsx",
+    "app/app/page.tsx",
+    "app/app/profile/page.tsx",
+    "app/app/risk/page.tsx",
+    "components/app-shell.tsx",
+    "components/ui/index.tsx",
+    "lib/i18n/provider.tsx"
+   ]
+  },
+  "react-dom": {
+   "section": "dependencies",
+   "version": "19.3.0",
+   "used_in": []
+  },
+  "react-hook-form": {
+   "section": "dependencies",
+   "version": "7.92.0",
+   "used_in": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/app/risk/page.tsx"
+   ]
+  },
+  "react-markdown": {
+   "section": "dependencies",
+   "version": "10.1.0",
+   "used_in": [
+    "app/app/chat/page.tsx"
+   ]
+  },
+  "recharts": {
+   "section": "dependencies",
+   "version": "3.11.0",
+   "used_in": [
+    "app/app/admin/page.tsx",
+    "app/app/risk/page.tsx"
+   ]
+  },
+  "remark-gfm": {
+   "section": "dependencies",
+   "version": "4.0.1",
+   "used_in": [
+    "app/app/chat/page.tsx"
+   ]
+  },
+  "tailwind-merge": {
+   "section": "dependencies",
+   "version": "3.7.1",
+   "used_in": [
+    "lib/utils.ts"
+   ]
+  },
+  "zod": {
+   "section": "dependencies",
+   "version": "4.6.7",
+   "used_in": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/app/risk/page.tsx"
+   ]
+  },
+  "@playwright/test": {
+   "section": "devDependencies",
+   "version": "1.63.0",
+   "used_in": [
+    "playwright.config.ts",
+    "tests/e2e/helpers.ts",
+    "tests/e2e/i18n-auth.spec.ts",
+    "tests/e2e/responsive.spec.ts",
+    "tests/e2e/workspace.spec.ts"
+   ]
+  },
+  "@tailwindcss/turbopack": {
+   "section": "devDependencies",
+   "version": "4.3.3",
+   "used_in": [
+    "next.config.ts"
+   ]
+  },
+  "@types/node": {
+   "section": "devDependencies",
+   "version": "20.19.43",
+   "used_in": []
+  },
+  "@types/react": {
+   "section": "devDependencies",
+   "version": "19.3.0",
+   "used_in": []
+  },
+  "@types/react-dom": {
+   "section": "devDependencies",
+   "version": "19.3.0",
+   "used_in": []
+  },
+  "eslint": {
+   "section": "devDependencies",
+   "version": "9.39.5",
+   "used_in": [
+    "eslint.config.mjs"
+   ]
+  },
+  "eslint-config-next": {
+   "section": "devDependencies",
+   "version": "16.4.6",
+   "used_in": [
+    "eslint.config.mjs"
+   ]
+  },
+  "tailwindcss": {
+   "section": "devDependencies",
+   "version": "4.3.3",
+   "used_in": []
+  },
+  "typescript": {
+   "section": "devDependencies",
+   "version": "5.9.3",
+   "used_in": []
+  }
+ }
+}

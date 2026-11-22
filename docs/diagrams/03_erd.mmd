@@ -1,0 +1,86 @@
+erDiagram
+  AUTH_USERS ||--|| PROFILES : "1:1 (trigger)"
+  PROFILES ||--o| USER_MEDICAL_PROFILES : has
+  PROFILES ||--o{ CONVERSATIONS : owns
+  CONVERSATIONS ||--o{ MESSAGES : contains
+  PROFILES ||--o{ MEDICAL_DOCUMENTS : uploads
+  MEDICAL_DOCUMENTS ||--o{ MEDICAL_ANALYSIS_REPORTS : "analysed into"
+  PROFILES ||--o{ HEART_RISK_ASSESSMENTS : runs
+  PROFILES ||--o{ PRESCRIPTIONS : has
+  MEDICAL_DOCUMENTS |o--o{ PRESCRIPTIONS : "source image"
+  PRESCRIPTIONS ||--o{ MEDICATION_RECORDS : lists
+  PROFILES ||--o{ MEDICATION_RECORDS : owns
+  PROFILES ||--o{ MEDICAL_KNOWLEDGE : "created_by / approved_by"
+  PROFILES {
+    uuid id PK
+    text full_name
+    app_role role
+    account_status status
+    text locale
+    timestamptz consent_terms_at
+    timestamptz consent_ai_processing_at
+  }
+  USER_MEDICAL_PROFILES {
+    uuid user_id PK
+    date date_of_birth
+    text sex
+    numeric height_cm
+    numeric weight_kg
+    text blood_type
+    text_array allergies
+    text_array chronic_conditions
+  }
+  CONVERSATIONS { uuid id PK
+    uuid user_id FK
+    text title }
+  MESSAGES { uuid id PK
+    uuid conversation_id FK
+    uuid user_id FK
+    text role
+    text content
+    jsonb sources
+    bool is_emergency }
+  MEDICAL_DOCUMENTS { uuid id PK
+    uuid user_id FK
+    document_type doc_type
+    text storage_bucket
+    text storage_path UK
+    text mime_type
+    bigint size_bytes
+    document_status status }
+  MEDICAL_ANALYSIS_REPORTS { uuid id PK
+    uuid document_id FK
+    uuid user_id FK
+    text ocr_engine
+    text raw_text
+    jsonb extracted
+    text_array warnings }
+  HEART_RISK_ASSESSMENTS { uuid id PK
+    uuid user_id FK
+    jsonb inputs
+    int prediction
+    numeric score
+    text model_version }
+  PRESCRIPTIONS { uuid id PK
+    uuid user_id FK
+    uuid document_id FK
+    bool confirmed_by_user
+    jsonb review }
+  MEDICATION_RECORDS { uuid id PK
+    uuid user_id FK
+    uuid prescription_id FK
+    text name
+    text dosage
+    bool verified }
+  MEDICAL_KNOWLEDGE { uuid id PK
+    text source_name
+    text source_url
+    text content
+    vector768 embedding
+    knowledge_status status }
+  AUDIT_LOGS { bigint id PK
+    uuid actor_id
+    text action
+    jsonb metadata }
+  SYSTEM_SETTINGS { text key PK
+    jsonb value }

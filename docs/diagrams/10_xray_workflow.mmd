@@ -1,0 +1,9 @@
+flowchart LR
+  A["X-ray JPG/PNG upload<br/>bucket xray-images (PDF rejected)"] --> B["validate: magic bytes, decodable, size"]
+  B --> C["store privately"]
+  C --> D["Pillow metadata: width, height, mode, format,<br/>mean grey intensity"]
+  D --> E["Report: diagnosis_performed = false<br/>+ 'X-ray analysis is NOT implemented' notice"]
+  F["Research classifier on a public chest X-ray dataset"] -.-> G["PLANNED / FUTURE WORK - not implemented"]
+  H["Gemini image description"] -. "deliberately NOT used" .-> E
+  style F fill:#fff3cd,stroke:#c77700,stroke-dasharray: 5 5
+  style G fill:#fff3cd,stroke:#c77700,stroke-dasharray: 5 5

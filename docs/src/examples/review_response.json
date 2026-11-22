@@ -1,0 +1,54 @@
+{
+ "warnings": [
+  {
+   "type": "missing_dosage",
+   "severity": "warning",
+   "message": "ibuprofen: dosage missing."
+  },
+  {
+   "type": "missing_frequency",
+   "severity": "info",
+   "message": "ibuprofen: frequency missing."
+  },
+  {
+   "type": "no_allergy_info",
+   "severity": "info",
+   "message": "No allergies are recorded in your profile, so no allergy check was possible."
+  }
+ ],
+ "interactions": [
+  {
+   "drugs": [
+    "ibuprofen",
+    "warfarin"
+   ],
+   "severity": "major",
+   "summary": "Combining an anticoagulant with antiplatelet drugs or NSAIDs can increase bleeding risk.",
+   "source": {
+    "name": "Warfarin prescribing information (FDA), 'Drug Interactions' section",
+    "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=warfarin"
+   },
+   "curated": true
+  }
+ ],
+ "coverage_note": "Curated starter list of widely documented interaction classes. NOT exhaustive: no warning does not mean a combination is safe. Entries must be approved by a medical reviewer before any real-world use.",
+ "pharmacist_notice": {
+  "en": "This review is informational. It does not prescribe, stop, replace or change any medication or dose, and it cannot declare any prescription safe for you. A pharmacist or doctor must verify all medication decisions.",
+  "ar": "هذه المراجعة معلوماتية فقط. لا تصف دواءً ولا توقفه ولا تستبدله ولا تغير جرعته، ولا يمكنها اعتبار أي روشتة آمنة لك. يجب أن يراجع الصيدلي أو الطبيب كل القرارات الدوائية."
+ },
+ "allergy_check_performed": false,
+ "drug_information": [
+  {
+   "name": "ibuprofen",
+   "status": "unavailable",
+   "reason": "ProxyError",
+   "source": "DailyMed (NLM)"
+  },
+  {
+   "name": "warfarin",
+   "status": "unavailable",
+   "reason": "ProxyError",
+   "source": "DailyMed (NLM)"
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+sha256 a74b7efa387bc9d108d7d0115d831fe9b414b29ae7124f331b622b4efa0427c8
+fetched_from https://raw.githubusercontent.com/nyuvis/datasets/master/heart/processed.cleveland.data
+identical_to mirrors: lanpa/tensorboardX, Aniruddha-Tapas/Applied-Machine-Learning, PacktWorkshops/The-Data-Science-Workshop
+original https://archive.ics.uci.edu/dataset/45/heart+disease (blocked in build sandbox)

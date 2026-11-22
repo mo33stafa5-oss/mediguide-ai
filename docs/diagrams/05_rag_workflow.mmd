@@ -1,0 +1,19 @@
+flowchart TB
+  subgraph Ingest["Ingestion - POST /api/knowledge/ingest (reviewer/admin) - Implemented"]
+    A["Source text + name + URL + dates"] --> B["clean_text: strip HTML/whitespace"]
+    B --> C["chunk_text: paragraphs, 1200 chars, 150 overlap"]
+    C --> D["gemini.embed RETRIEVAL_DOCUMENT 768-d, L2-normalised"]
+    D --> E[("medical_knowledge<br/>status = pending")]
+    E --> F{"Reviewer approves?"}
+    F -- "POST /knowledge/id/status" --> G[("status = approved")]
+  end
+  subgraph Retrieve["Retrieval - inside /api/chat - Implemented"]
+    Q["User question"] --> QE["embed RETRIEVAL_QUERY"]
+    QE --> M["rpc match_medical_knowledge<br/>cosine similarity >= 0.45, top 5, approved only"]
+    G --> M
+    M --> CTX["format_context [1]..[n]"]
+    CTX --> GEN["Gemini answer with citations"]
+    M --> SRC["to_sources: name, URL, published, last reviewed, excerpt"]
+  end
+  NOTE["No documents are pre-loaded: the approved-source corpus must be added by an administrator (Not done)"]
+  style NOTE fill:#fff3cd,stroke:#c77700

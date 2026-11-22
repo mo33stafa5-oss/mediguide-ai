@@ -1,0 +1,26 @@
+sequenceDiagram
+  autonumber
+  actor U as User
+  participant FE as Next.js (browser)
+  participant PX as proxy.ts
+  participant SA as Supabase Auth
+  participant DB as Postgres
+  participant API as FastAPI
+  U->>FE: /register (name, email, password, consent)
+  FE->>SA: signUp (email confirmation required)
+  SA->>DB: insert auth.users -> trigger handle_new_user creates profiles (role = patient)
+  SA-->>U: verification email
+  U->>SA: click link (/auth/v1/verify)
+  SA-->>FE: redirect with session -> /app
+  U->>FE: /login
+  FE->>SA: signInWithPassword
+  SA-->>FE: JWT cookie (sb-*)
+  FE->>PX: GET /app/...
+  PX->>SA: getUser() refresh cookie
+  alt no user
+    PX-->>FE: redirect /login?next=...
+  end
+  FE->>API: fetch /api/* with Authorization: Bearer access_token
+  API->>SA: auth.get_user(token) (server-side verification)
+  API->>DB: profiles.role/status (suspended -> 403)
+  Note over U,SA: Password recovery: resetPasswordForEmail -> /auth/callback?next=/reset-password -> updateUser

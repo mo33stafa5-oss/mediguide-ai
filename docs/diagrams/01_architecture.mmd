@@ -1,0 +1,40 @@
+flowchart LR
+  subgraph Client["Browser (Implemented)"]
+    UI["Next.js 16 App Router pages<br/>React 19 + Tailwind 4 + RHF/Zod"]
+    SBJS["@supabase/ssr browser client<br/>(auth + RLS reads)"]
+  end
+  subgraph Vercel["Vercel (Prepared, not deployed)"]
+    PROXY["proxy.ts<br/>session refresh + /app guard"]
+    NEXT["Next.js server<br/>SSR layouts, auth callback"]
+    FAPI["FastAPI function api/index.py<br/>/api/*"]
+  end
+  subgraph Py["Python modules inside FastAPI"]
+    ML["ml_service<br/>joblib model (inference only)"]
+    RAG["rag + gemini services"]
+    OCRM["ocr validate/parsers"]
+    DRUG["drugs (rules + DailyMed)"]
+    SAFE["safety (emergency regex)"]
+  end
+  subgraph Worker["OCR worker - Docker (Implemented, not deployed)"]
+    TESS["Tesseract + OpenCV<br/>/internal/ocr"]
+  end
+  subgraph Supabase["Supabase (Implemented on local stack)"]
+    AUTH["Auth (GoTrue)"]
+    PG[("PostgreSQL + RLS<br/>pgvector")]
+    STO[("Private Storage buckets")]
+  end
+  GEM["Google Gemini API<br/>(integration built, key not configured)"]
+  DM["DailyMed (NLM)<br/>live lookup"]
+
+  UI --> PROXY --> NEXT
+  UI -- "Bearer JWT" --> FAPI
+  SBJS --> AUTH
+  SBJS -- "RLS-filtered reads" --> PG
+  FAPI --> ML & RAG & OCRM & DRUG & SAFE
+  FAPI -- "user JWT (RLS applies)" --> PG
+  FAPI --> STO
+  FAPI -- "service role: audit, admin, delete" --> PG
+  RAG --> GEM
+  RAG -- "match_medical_knowledge()" --> PG
+  DRUG --> DM
+  FAPI -- "X-Worker-Token" --> TESS

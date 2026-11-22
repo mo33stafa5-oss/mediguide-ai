@@ -1,0 +1,4 @@
+-r backend/requirements-ocr.txt
+pytest==9.2.0
+matplotlib==3.11.2
+python-pptx==1.0.2

@@ -1,0 +1,32 @@
+sequenceDiagram
+  autonumber
+  actor U as Patient
+  participant FE as Next.js chat page
+  participant API as FastAPI /api/chat
+  participant SB as Supabase (RLS, user JWT)
+  participant SAF as safety.is_emergency
+  participant RAG as rag.retrieve
+  participant G as Gemini
+  U->>FE: type question
+  FE->>API: POST /api/chat (Bearer JWT, message, locale)
+  API->>SB: auth.get_user(token) + profiles (role, status, consent)
+  alt no GEMINI_API_KEY
+    API-->>FE: 503 service_not_configured
+  else no AI-processing consent
+    API-->>FE: 403 consent_required
+  end
+  API->>SB: create/load conversation, last 20 messages, insert user message
+  API->>SAF: regex check (Arabic + English)
+  opt emergency
+    API-->>FE: SSE meta(emergency) + deterministic 123 warning FIRST
+  end
+  API->>RAG: embed query (RETRIEVAL_QUERY)
+  RAG->>G: embed_content (768-d)
+  RAG->>SB: rpc match_medical_knowledge (approved chunks only)
+  API->>G: generate_content_stream(system prompt + history + SOURCES)
+  loop streamed chunks
+    G-->>API: text
+    API-->>FE: SSE delta
+  end
+  API->>SB: insert assistant message (+sources), touch conversation
+  API-->>FE: SSE done
