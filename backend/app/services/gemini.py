@@ -68,14 +68,26 @@ def stream_chat(system_prompt: str, history: list[dict], user_message: str, cont
     for model in models:
         for attempt in range(3):
             started = False
+            finish = None
             try:
                 for chunk in client.models.generate_content_stream(
                         model=model, contents=_contents(history, user_message, context),
-                        config=types.GenerateContentConfig(system_instruction=system_prompt, temperature=0.3, max_output_tokens=1500)):
+                        config=types.GenerateContentConfig(system_instruction=system_prompt, temperature=0.3, max_output_tokens=4096)):
+                    try:
+                        fr = chunk.candidates[0].finish_reason if chunk.candidates else None
+                        finish = str(getattr(fr, "name", fr)) if fr else finish
+                    except Exception:  # noqa: BLE001
+                        pass
                     if chunk.text:
                         started = True
                         yield chunk.text
-                return
+                if started:
+                    return
+                # Model finished without any visible text (e.g. all tokens spent on internal reasoning, or blocked).
+                logging.getLogger("mediguide.gemini").warning("Gemini returned empty text model=%s finish=%s", model, finish)
+                raise ApiError(502, "gemini_empty", f"Gemini returned an empty answer (finish reason: {finish or 'unknown'}). Please try again.")
+            except ApiError:
+                raise
             except Exception as e:  # noqa: BLE001
                 last = e
                 logging.getLogger("mediguide.gemini").warning("Gemini call failed model=%s attempt=%d: %s", model, attempt + 1, _describe(e))
