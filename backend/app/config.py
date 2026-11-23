@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     supabase_anon_key: str = ""            # publishable key (safe for client use)
     supabase_service_role_key: str = ""    # server only: audit log, account deletion, admin
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.8-flash"
+    gemini_fallback_model: str = ""
     gemini_embedding_model: str = "gemini-embedding-001"
     embedding_dim: int = 768
     ocr_worker_url: str = ""               # if set, OCR is delegated to the Docker worker

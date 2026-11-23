@@ -46,15 +46,44 @@ def _contents(history: list[dict], user_message: str, context: str):
     return msgs
 
 
+def _describe(e: Exception) -> str:
+    """Safe error summary for logs/UI: class + HTTP code + Google status. Never includes the key or the prompt."""
+    code = getattr(e, "code", None) or getattr(e, "status_code", None)
+    status = getattr(e, "status", None)
+    return f"{type(e).__name__}" + (f", HTTP {code}" if code else "") + (f" {status}" if status else "")
+
+
+def _retryable(e: Exception) -> bool:
+    return (getattr(e, "code", None) or getattr(e, "status_code", None)) in (429, 500, 502, 503, 504)
+
+
 def stream_chat(system_prompt: str, history: list[dict], user_message: str, context: str) -> Iterator[str]:
+    import logging
+    import time
     from google.genai import types
     s = get_settings()
     client = _get_client()
-    try:
-        for chunk in client.models.generate_content_stream(
-                model=s.gemini_model, contents=_contents(history, user_message, context),
-                config=types.GenerateContentConfig(system_instruction=system_prompt, temperature=0.3, max_output_tokens=1500)):
-            if chunk.text:
-                yield chunk.text
-    except Exception as e:
-        raise ApiError(502, "gemini_error", f"Gemini request failed ({type(e).__name__}).")
+    models = [s.gemini_model] + ([s.gemini_fallback_model] if s.gemini_fallback_model and s.gemini_fallback_model != s.gemini_model else [])
+    last: Exception | None = None
+    for model in models:
+        for attempt in range(3):
+            started = False
+            try:
+                for chunk in client.models.generate_content_stream(
+                        model=model, contents=_contents(history, user_message, context),
+                        config=types.GenerateContentConfig(system_instruction=system_prompt, temperature=0.3, max_output_tokens=1500)):
+                    if chunk.text:
+                        started = True
+                        yield chunk.text
+                return
+            except Exception as e:  # noqa: BLE001
+                last = e
+                logging.getLogger("mediguide.gemini").warning("Gemini call failed model=%s attempt=%d: %s", model, attempt + 1, _describe(e))
+                if started or not _retryable(e):
+                    break  # never replay a partially streamed answer; do not retry client errors
+                time.sleep(1.5 * (attempt + 1))
+            if started:
+                break
+        if started:
+            break
+    raise ApiError(502, "gemini_error", f"Gemini request failed ({_describe(last) if last else 'unknown'}).")
